@@ -3,13 +3,6 @@ from flask_security.models         import fsqla_v3                              
 from sqlalchemy.orm                import DeclarativeBase,MappedAsDataclass,Mapped,mapped_column
 from sqlalchemy_imageattach.entity import Image,image_attachment
 
-current_app.user_datastore = SQLAlchemyUserDatastore(current_app.database,User,Role)
-
-class Role(current_app.database.Model, fsqla.FsRoleMixin):
-    pass
-class User(current_app.database.Model, fsqla.FsUserMixin):
-    pass
-
 class MedalRibbon(current_app.database.Model):
     __tablename__ = "medal_ribbons"
     name:        Mapped[str] = mapped_column(prinamry_key=True)
@@ -38,3 +31,7 @@ class ShipRibbon(current_app.database.Model):
     __tablename__ = "ship_ribbons"
     id:     Mapped[int] = mapped_column(primary_key=True)
     ribbon: Mapped[str] = mapped_column(ForeignKey(medal_ribbons.name,onupdate="CASCADE",ondelete="CASCADE"),nullable=False)
+
+current_app.user_datastore = SQLAlchemyUserDatastore(current_app.database,User,Role)
+
+current_app.database.create_all()
